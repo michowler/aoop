@@ -1,8 +1,13 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 public class restaurantData {
 
@@ -22,36 +27,42 @@ rest.put("Marini's on 57", Arrays.asList(new String[] {"asian", "western", "vega
 }
 
 
-private HashMap<String, List<String>> getRest() {
-	return this.rest;
+public HashMap<String, List<String>> getRest() {
+	return rest;
 }
 
-/*private <K, V> List<K> getKeysForValues(HashMap<K, V> rest, V value) 
-{
-	List<K> listOfKeys = null;
-	 
-	//Check if Map contains the given value
-	if(mapOfWords.containsValue(value))
-	{
-		// Create an Empty List
-		listOfKeys = new ArrayList<>();
-				
-		// Iterate over each entry of map using entrySet
-		for (Map.Entry<K, V> entry : mapOfWords.entrySet()) 
-		{
-			// Check if value matches with given value
-			if (entry.getValue().equals(value))
-			{
-				// Store the key from entry to the list
-				listOfKeys.add(entry.getKey());
-			}
+//remove duplicates
+public void removeDuplicate(ArrayList<String> list) {
+	//store list into temp
+	Set<String> temp = new HashSet<>();
+	temp.addAll(list);
+	list.clear();
+	list.addAll(temp);
+	
+}
+
+public void addTokenFoundInList(ArrayList<String> list, String input, HashMap<String, List<String>> rest) {
+	//separate each word and ignore . and ,
+		StringTokenizer st = new StringTokenizer(input, "., ");
+		while(st.hasMoreTokens()) {
+			//move to next word/token
+			String t = st.nextToken();
+			//iterate through map
+			for (Map.Entry<String,List<String> > entry : rest.entrySet()) 
+			{	//if map contains the word found in user's input
+				if(entry.getValue().contains(t))
+				{
+					//store values found in key to arraylist
+					list.add(t);
+					
+				} 
+			
+			
 		}
 	}
-	// Return the list of keys whose value matches with given value.
-	return listOfKeys;	
-}*/
-
-
+		
+}
 
 
 }
+
