@@ -1,13 +1,18 @@
 package application;
 
+import javafx.geometry.Insets;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 public class Charts {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public BarChart displayStatistics() {
+	public BorderPane displayStatistics() {
+		BorderPane bp = new BorderPane();
+		BorderPane.setMargin(bp,new Insets(50,10,10,10));
 	    String austria = "Austria";
 	    String brazil = "Brazil";
 	    String france = "France";
@@ -47,7 +52,8 @@ public class Charts {
         series3.getData().add(new XYChart.Data(usa, 92633.68));  	        
         
         bc.getData().addAll(series1, series2, series3);
-	    return bc;
+        bp.setCenter(bc);
+	    return bp;
 	}
 
 }

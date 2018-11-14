@@ -2,6 +2,25 @@ package application;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
 public class Destination {
 	private String title;
 	private double price;
@@ -10,6 +29,8 @@ public class Destination {
 	private double ratings;
 	private String state;
 	private String address;
+	//private String image;
+	//private HashMap <> tags; 
 	
 	public Destination() {
 	}
@@ -38,6 +59,7 @@ public class Destination {
 		this.ratings = ratings;
 		this.state = "Kuala Lumpur";		
 		this.address = address;
+		//this.image = image;
 	}
 
 	/**
@@ -196,7 +218,7 @@ public class Destination {
 			}
 		}while(userinput != 0);
 	}
-	
-	
+
+    
 	
 }

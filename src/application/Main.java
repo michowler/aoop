@@ -12,6 +12,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -22,10 +23,10 @@ public class Main extends Application {
 		try {  	        	
 			BorderPane root = new BorderPane();
 			Forms form = new Forms();
-			root.setCenter(form.loginForm(form.initUserDB(), primaryStage));		
-			Scene sceneLogout = new Scene(root, 1280,720);
+			root.setCenter(form.loginForm(form.initUserDB(), primaryStage));			
+			Scene sceneLogout = new Scene(root, 1280,720);			
 			primaryStage.setScene(sceneLogout);	
-			primaryStage.setTitle("Tour Me Around");
+			primaryStage.setTitle("Tour Me Around");			
 			sceneLogout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());			
 			primaryStage.show();
 		} catch(Exception e) { 

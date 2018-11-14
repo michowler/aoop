@@ -1,23 +1,26 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
 .root{
-    -fx-font-size: 12;
-    -fx-font: "Arial";  
-    -fx-background-color: linear-gradient(to bottom, white, black);
+    -fx-font-size: 14;
+    -fx-background-color: linear-gradient(to top left, #ccccff 0%, #ffcccc 100%);
 }
 
 .button {
-	-fx-background-color: transparent;
-	-fx-text-fill: white;
-	-fx-border-color: white;
+	-fx-background-color: white;
+	-fx-text-fill: black;
+	-fx-border-color: black;
 	-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
 	-fx-border-radius: 1;
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0, 1);
 }
 
 .button:hover {
-    -fx-background-color: black;
-    -fx-text-fill: white;
-    -fx-border-color: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-border-color: black;
     -fx-border-radius: 1;
+}
+
+#mainNavBar{
+	-fx-background-color: transparent;
 }

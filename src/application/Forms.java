@@ -23,9 +23,13 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -42,7 +46,10 @@ public class Forms {
 	public BorderPane contactUsForm()  {
 		
 		BorderPane contactForm = new BorderPane();
-		BorderPane.setMargin(contactForm,new Insets(150,100,10,100));
+		BorderPane.setMargin(contactForm,new Insets(80,100,10,100));
+		Text txtTitle = new Text("Contact Us");		
+		txtTitle.setFont(Font.font("Arial", FontWeight.BOLD, 50));
+		
 		TextField contactEmail = new TextField();
 		contactEmail.setPromptText("Enter your email");
 		TextArea contactMsg = new TextArea();
@@ -52,7 +59,7 @@ public class Forms {
 		contactMsg.setMaxHeight(350);  //sets height of the TextArea to 400 pixels 
 		contactMsg.setMaxWidth(650); 
 		Label contactLabel = new Label("Contact us for questions or feedbacks!");
-		contactLabel.setStyle("-fx-text-fill: white;");
+		
 		String fileName = "contactUs.txt";
 		Button submit = new Button("SUBMIT");
 		
@@ -74,6 +81,8 @@ public class Forms {
 			//add container to an array
 			
 		});
+		contactForm.setAlignment(txtTitle,Pos.BASELINE_LEFT);
+		contactForm.setTop(txtTitle);
 		contactForm.setCenter(contactList);
 		return contactForm;
 	}
@@ -187,7 +196,12 @@ public class Forms {
 	
 	public BorderPane loginForm(ArrayList<User> myUsers, Stage primaryStage) { //creating existing users array
 		BorderPane pane = new BorderPane();
-		Insets insets = new Insets(300);		
+		Insets insets = new Insets(130,500,200,500);	
+		
+		Image imageLogo = new Image(getClass().getResourceAsStream("tour.png"));			     	   
+	    ImageView iv = new ImageView(imageLogo);
+	    iv.setFitHeight(200);
+		iv.setFitWidth(250);
 		
 		Label username = new Label("Username: ");	
 		Label password = new Label("Password: ");
@@ -210,9 +224,9 @@ public class Forms {
 		panehbox3.setAlignment(Pos.BASELINE_LEFT);
 		panehbox1.setSpacing(10);
 		panehbox2.setSpacing(10);
-		panehbox3.setSpacing(10);		
+		panehbox3.setSpacing(15);		
 		
-		vboxLogin.getChildren().addAll(panehbox1, panehbox2, panehbox3, panehbox4);
+		vboxLogin.getChildren().addAll(iv, panehbox1, panehbox2, panehbox3, panehbox4);
 		vboxLogin.setSpacing(10);
 		pane.setCenter(vboxLogin);
 		vboxLogin.setId("vboxLogin");
@@ -233,7 +247,7 @@ public class Forms {
         					curUser.add(new User(user.getUsername(), user.getPassword(),user.getLocation(), user.getBudget(), user.getCountry(), user.getLatitude(), user.getLongtitude()));
         					BorderPane loginPane = new BorderPane();
         					Layout home = new Layout();
-        					loginPane.setTop(home.homePage(curUser, primaryStage));
+        					loginPane.setTop(home.homeMenu(curUser, primaryStage));
         					loginPane.setCenter(null);
         					Scene sceneLogin = new Scene(loginPane, 1280,720);
         					primaryStage.setScene(sceneLogin);         					
@@ -279,89 +293,34 @@ public class Forms {
 	        } 	        
 	 }   
 	 
-	 public personalisationMain filterByTags() {
-		 personalisationMain filterForm = new personalisationMain();
-		 return filterForm;
-	 }
-	 
-	 public VBox personalisationFilter() {			
-			
-			RadioButton rest = new RadioButton("Restaurant");
-			RadioButton attr = new RadioButton("Attraction");
-			RadioButton hotel = new RadioButton("Hotel");
-			
-			final ToggleGroup group = new ToggleGroup();
-			
-			rest.setToggleGroup(group);
-			attr.setToggleGroup(group);
-			hotel.setToggleGroup(group);
-			
-			Button ok = new Button("OK");
-			
-			ok.setOnAction(value -> {
-				
-					if(group.getSelectedToggle() == rest) {
-						//mainRestaurant.launch(mainRestaurant.class);
-						try {
-							restaurantFilter();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					else if (group.getSelectedToggle() == attr) {
-						try {
-							attractionFilter();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					} else {
-						try {
-							hotelFilter();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						};
-					}
-				
-			});
-			
-			VBox vb = new VBox();
-			vb.getChildren().addAll(new Label("Choose one"), rest, attr, hotel, ok);
-			vb.setAlignment(Pos.CENTER);
-			
-			return vb;
-	 }
-	 
 	 public VBox attractionFilter() {
+			
 		//declare attractiondata as ad
-			attractionData ad = new attractionData();
+		attractionData ad = new attractionData();
+		
+		//create button
+		Button submit = new Button("SUBMIT");
+		//create label
+		Label l1 = new Label("Write a description of what you are looking for: (example- fun, chill, mosque, historical, family..)");
+		Label l2 = new Label("");
+		//create textfield
+		TextField tf = new TextField();
+		tf.setMinSize(50, 100);
 			
-			//create button
-			Button submit = new Button("SUBMIT");
-			//create label
-			Label l1 = new Label("Write a description of what you are looking for: (example- fun, chill, mosque, historical, family..)");
-			Label l2 = new Label("");
-			//create textfield
-			TextField tf = new TextField();
-			tf.setMinSize(200, 100);
-				
-			VBox vb = new VBox();
-			vb.setMinWidth(80);
-			vb.setMinHeight(100);
-			vb.setAlignment(Pos.CENTER);
-			
-			
-			//store keys
-			ArrayList<String> listOfKeys = new ArrayList<String>();
-			//store characteristics of restaurant that user typed
-			ArrayList<String> listOfItems = new ArrayList<String>();
-			
-			submit.setDefaultButton(true); //can press enter instead of clicking submit
-
-			
-			submit.setOnAction(value -> {
+		VBox vb = new VBox();
+		vb.setMinWidth(80);
+		vb.setMinHeight(100);
+		vb.setAlignment(Pos.CENTER);
+		vb.getChildren().add(l2);
+		
+		//store keys
+		ArrayList<String> listOfKeys = new ArrayList<String>();
+		//store characteristics of restaurant that user typed
+		ArrayList<String> listOfItems = new ArrayList<String>();
+		
+		submit.setDefaultButton(true); //can press enter instead of clicking submit
+		
+		submit.setOnAction(value -> {
 			//clear listofkeys and listofitems before starting again
 			listOfKeys.clear(); 
 			listOfItems.clear();
@@ -395,41 +354,41 @@ public class Forms {
 			//remove duplicates by putting them into set
 			ad.removeDuplicate(listOfItems);
 				
-				int i = ad.attr.size();
-				for(Map.Entry<String, List<String>> entry : ad.attr.entrySet())
-				{	//if entry contains value equal to the arraylist listofitems
-					if(entry.getValue().containsAll(listOfItems))
-					{
-						//store the keys with the values into listofkeys
-						listOfKeys.add(entry.getKey());
-					}
-			
+			int i = ad.attr.size();
+			for(Map.Entry<String, List<String>> entry : ad.attr.entrySet())
+			{	//if entry contains value equal to the arraylist listofitems
+				if(entry.getValue().containsAll(listOfItems))
+				{
+					//store the keys with the values into listofkeys
+					listOfKeys.add(entry.getKey());
 				}
-			
-				//remove duplicates
-				ad.removeDuplicate(listOfKeys);
-			
-	           if(listOfKeys.size() != 10) { //if none of the keys contain the value 
-					
-					l2.setText(listOfKeys.toString().replace("[", "").replace("]", ""));
-					
+		
+			}
+		
+			//remove duplicates
+			ad.removeDuplicate(listOfKeys);
+		
+           if(listOfKeys.size() != 10) { //if none of the keys contain the value 
 				
-				} else { //if at least 1 of the keys contain the value
+				l2.setText(listOfKeys.toString().replace("[", "").replace("]", ""));
 				
 			
+			} else { //if at least 1 of the keys contain the value
+			
+		
 				l2.setText("Not found. Will be updated soon!");
-				
-			    }
-			});	
 			
-			VBox vb2 = new VBox();
-			vb2.setAlignment(Pos.CENTER);
-			vb2.getChildren().addAll(l1, tf, vb, submit);
-			return vb2;
+		    }
+		});	
+		
+		VBox vb2 = new VBox();
+		vb2.setAlignment(Pos.CENTER);
+		VBox.setMargin(vb2,new Insets(100,20,20,30));
+		vb2.getChildren().addAll(l1, tf, vb, submit);
+		return vb2;
 	 }
 	 
 	public VBox hotelFilter() {
-
 		//declare hoteldata as hd
 		hotelData hd = new hotelData();
 		
@@ -440,12 +399,13 @@ public class Forms {
 		Label l2 = new Label("");
 		//create textfield
 		TextField tf = new TextField();
-		tf.setMinSize(200, 100);
+		tf.setMinSize(50, 100);
 		
 		VBox vb = new VBox();
 		vb.setMinWidth(80);
 		vb.setMinHeight(100);
 		vb.setAlignment(Pos.CENTER);
+		vb.getChildren().add(l2);		
 		
 		//store keys
 		ArrayList<String> listOfKeys = new ArrayList<String>();
@@ -453,10 +413,9 @@ public class Forms {
 		ArrayList<String> listOfItems = new ArrayList<String>();
 				
 		submit.setDefaultButton(true); //can press enter instead of clicking submit
-
 		
-			//store response by user 
-			submit.setOnAction(value -> {
+		//store response by user 
+		submit.setOnAction(value -> {
 			//clear listofkeys and listofitems before starting again
 			listOfKeys.clear(); 
 			listOfItems.clear();
@@ -490,36 +449,36 @@ public class Forms {
 			//remove duplicates by putting them into set
 			hd.removeDuplicate(listOfItems);
 				
-				int i = hd.hotel.size();
-				for(Map.Entry<String, List<String>> entry : hd.hotel.entrySet())
-				{	//if entry contains value equal to the arraylist listofitems
-					if(entry.getValue().containsAll(listOfItems))
-					{
-						//store the keys with the values into listofkeys
-						listOfKeys.add(entry.getKey());
-						
-					}
-				}				
-
+			int i = hd.hotel.size();
+			for(Map.Entry<String, List<String>> entry : hd.hotel.entrySet())
+			{	//if entry contains value equal to the arraylist listofitems
+				if(entry.getValue().containsAll(listOfItems))
+				{
+					//store the keys with the values into listofkeys
+					listOfKeys.add(entry.getKey());
+					
+				}
+			}				
+		
+			//remove duplicates
+			hd.removeDuplicate(listOfKeys);
 			
-				//remove duplicates
-				hd.removeDuplicate(listOfKeys);
+			if(listOfKeys.size() != 10) { //if none of the keys contain the value 
 				
-				if(listOfKeys.size() != 10) { //if none of the keys contain the value 
-					
-					l2.setText(listOfKeys.toString().replace("[", "").replace("]", ""));
-					
-				
-				} else { //if at least 1 of the keys contain the value
+				l2.setText(listOfKeys.toString().replace("[", "").replace("]", ""));
 				
 			
+			} else { //if at least 1 of the keys contain the value
+			
+		
 				l2.setText("Not found. Will be updated soon!");
-				
-			    }
+			
+		    }
 		});
 
 		VBox vb2 = new VBox();
 		vb2.setAlignment(Pos.CENTER);
+		VBox.setMargin(vb2,new Insets(100,20,20,30));
 		vb2.getChildren().addAll(l1, tf, vb, submit);
 		return vb2;
 	 }
@@ -534,17 +493,19 @@ public class Forms {
 		//create button
 		Button submit = new Button("SUBMIT");
 	    //create label
-		Label l1 = new Label("Write a description of what you are looking for: (example- vegan, malaysian, halal, alcohol, skyview, fastfood etc..)");
+		
+		Label l1 = new Label("Write a description of what you are looking for: (example- vegan, malaysian, halal, alcohol, skyview, fastfood etc..)");		
 	   	Label l2 = new Label("");
 		//create textfield
 		TextField tf = new TextField();
-		tf.setMinSize(200, 100);
+		tf.setMinSize(50, 100);
 				
 		VBox vb = new VBox();
 		vb.setMinWidth(80);
 		vb.setMinHeight(100);
 		vb.setAlignment(Pos.CENTER);	
-		vb.getChildren().add(l2);
+		vb.getChildren().add(l2);		
+		
 		//store keys
 		ArrayList<String> listOfKeys = new ArrayList<String>();
 		//store characteristics of restaurant that user typed
@@ -553,40 +514,39 @@ public class Forms {
 		submit.setDefaultButton(true); //can press enter instead of clicking submit
 		
 		submit.setOnAction(value -> {
-		//clear listofkeys and listofitems before starting again
-		listOfKeys.clear(); 
-		listOfItems.clear();
-	    l2.setText(null);
-		String response = tf.getText();
-		
-		try {
-			File file = new File("unknownRestaurant.txt");
+			//clear listofkeys and listofitems before starting again
+			listOfKeys.clear(); 
+			listOfItems.clear();
+		    l2.setText(null);
+			String response = tf.getText();
 			
-			//if file does not exist, create new file
-			if(!file.exists()) {
-				System.out.print("File does not exist. creating a new one");
-				file.createNewFile();
-			}
-			
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			addTokenFoundInList(listOfItems, response, rd.rest, bw);
-
-				bw.flush();
-				bw.close();
+			try {
+				File file = new File("unknownRestaurant.txt");
 				
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				//if file does not exist, create new file
+				if(!file.exists()) {
+					System.out.print("File does not exist. creating a new one");
+					file.createNewFile();
+				}
+				
+				FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				
+				addTokenFoundInList(listOfItems, response, rd.rest, bw);
+
+					bw.flush();
+					bw.close();
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 			
-		
-		//remove duplicates by putting them into set
-		rd.removeDuplicate(listOfItems);
-			
-			
+			//remove duplicates by putting them into set
+			rd.removeDuplicate(listOfItems);
+							
 			for(Map.Entry<String, List<String>> entry : rd.rest.entrySet())
 			{	//if entry contains value equal to the arraylist listofitems
 				if(entry.getValue().containsAll(listOfItems))
@@ -598,25 +558,25 @@ public class Forms {
 				
 				
 			}
-				//remove duplicates
-				rd.removeDuplicate(listOfKeys);	
+			//remove duplicates
+			rd.removeDuplicate(listOfKeys);	
+			
+			if(listOfKeys.size() != 10) { //if none of the keys contain the value 
 				
-				if(listOfKeys.size() != 10) { //if none of the keys contain the value 
-					
-					l2.setText(listOfKeys.toString().replace("[", "").replace("]", ""));
-					
-				
-				} else { //if at least 1 of the keys contain the value
+				l2.setText(listOfKeys.toString().replace("[", "").replace("]", ""));
 				
 			
+			} else { //if at least 1 of the keys contain the value
+			
+		
 				l2.setText("Not found. Will be updated soon!");
-				
-			    }
+			
+		    }
 		});
 		
-		VBox vb2 = new VBox();
-			
-		vb2.setAlignment(Pos.CENTER);
+		VBox vb2 = new VBox();			
+		vb2.setAlignment(Pos.CENTER);		
+		VBox.setMargin(vb2,new Insets(100,20,20,30));		
 		vb2.getChildren().addAll(l1, tf, vb, submit);
 		return vb2;
 	}
