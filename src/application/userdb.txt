@@ -1,0 +1,2 @@
+nat;123;Selangor;Malaysia;
+mich;123123;Kuala Lumpur;Japan;

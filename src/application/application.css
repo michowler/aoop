@@ -1,46 +1,65 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
-@import url('https://fonts.googleapis.com/css?family=Comfortaa');
-
 .root{
-    -fx-font-size: 12pt;
-    -fx-font: 'Arial';  
-    -fx-background-color: linear-gradient(to bottom, #330867, #fed6e3);
-    -fx-base: rgb(132, 145, 47);
-    
+    -fx-font-size: 14;
+    -fx-background-color: linear-gradient(to top left, #ccccff 0%, #ffcccc 100%);
 }
 
-.menuHBox {
+.button {
+	-fx-background-color: white;
+	-fx-text-fill: black;
+	-fx-border-color: black;
+	-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
+	-fx-border-radius: 1;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 1;
+}
+
+#mainNavBar{
 	-fx-background-color: transparent;
 }
 
-.button{
-	-fx-background-color: transparent;
-	-fx-text-fill: white;
-	-fx-border-color: rgb(49, 89, 23);
+* {
+    -fx-my-menu-color: #263238;                  /* Change according to your needs */
+    -fx-my-menu-color-highlighted: #455a64;      /* Change according to your needs */
+    -fx-my-menu-font-color: #FFFFFF;             /* Change according to your needs */
+    -fx-my-menu-font-color-highlighted: #FFFFFF; /* Change according to your needs */
 }
 
-.text-input {
-    -fx-text-fill: -fx-text-inner-color;
-    -fx-highlight-fill: derive(-fx-control-inner-background,-20%);
-    -fx-highlight-text-fill: -fx-text-inner-color;
-    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 3, 2;
-    -fx-cursor: text;
-    -fx-padding: 0.333333em 0.583em 0.333333em 0.583em; /* 4 7 4 7 */
+.radio-button {
+    -fx-text-fill: #263238;
 }
-.text-input:focused {
-    -fx-highlight-fill: -fx-accent;
-    -fx-highlight-text-fill: white;
-    -fx-background-color: 
-        -fx-focus-color,
-        -fx-control-inner-background,
-        -fx-faint-focus-color,
-        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
-    -fx-background-insets: -0.2, 1, -1.4, 3;
-    -fx-background-radius: 3, 2, 4, 0;
-    -fx-prompt-text-fill: transparent;
+
+/* MENU BAR + Top-level MENU BUTTONS */
+/*** The menu bar itself ***/    
+.menu-bar {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** Top-level menu itself (not selected / hovered) ***/
+.menu-bar > .container > .menu-button {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** Top-level menu's label (not selected / hovered) ***/
+.menu-bar > .container > .menu-button > .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+}
+
+/*** Top-level menu's label (disabled) ***/
+.menu-bar > .container > .menu-button > .label:disabled {
+    -fx-opacity: 1.0;
+}
+
+/*** Top-level menu itself (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -fx-my-menu-color-highlighted;
 }
