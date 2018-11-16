@@ -24,9 +24,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ItineraryPlan{
@@ -62,8 +66,12 @@ public class ItineraryPlan{
 		}
 	}
 	
-	public VBox displayMyIt() {
-		
+	public BorderPane displayMyIt() {
+		BorderPane bp = new BorderPane();
+    	Text txtTit = new Text("My Itinerary Plan");
+    	txtTit.setFont(Font.font("Arial", FontWeight.BOLD, 50));
+    	BorderPane.setMargin(bp,new Insets(20,50,10,50));
+    	
 		overBudget = new Label();
 		budget = new Label("Your budget: " + user.getBudget());
 		totalCost = new Label("Total Cost: " + 0);
@@ -230,7 +238,9 @@ public class ItineraryPlan{
 		flowPane.getChildren().addAll(buttonBox, vbox);
 		flowPane.setMargin(buttonBox, new Insets(10, 10, 10, 10));	
 	
-		return vbox;
+		bp.setTop(txtTit);
+		bp.setCenter(vbox);
+		return bp;
 	}
 
 	

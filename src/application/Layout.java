@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -42,7 +43,7 @@ public class Layout {
 		BorderPane bPaneTop = new BorderPane();		
 		HBox menuHBoxLeft = new HBox();
 		HBox menuHBoxRight = new HBox();		
-		
+	
 		//Menu Statistics = new Menu(curUser.get(0).getUsername());
 		Menu moreOptions = new Menu(curUser.get(0).getUsername()); 
 		   
@@ -102,8 +103,7 @@ public class Layout {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-	    });
-	    
+	    });	    
 	    
 	    statsMenu.setOnAction(e->{
 	    	Charts cb = new Charts();
@@ -275,27 +275,47 @@ public class Layout {
 		Label price = new Label("");
 		Label priceD = new Label("");
 		Label ratings = new Label("");
-		Text ratingsD = new Text("");
+		Label ratingsD = new Label("");
+		Label type = new Label("");
+		Label typeD = new Label("");
+		Label address = new Label("");
+		address.setId("label");
+		Text addressD = new Text("");
 		Button addButton = new Button("Itinerary");
 		
         Image addImg = new Image(getClass().getResourceAsStream("add.png"));
 		ImageView ivAdd =new ImageView(addImg);
 		ivAdd.setFitHeight(20);
 		ivAdd.setFitWidth(20);
-        addButton.setGraphic(ivAdd);         
+        addButton.setGraphic(ivAdd);     
+        HBox hboxRow0 = new HBox();
+        HBox hboxRow = new HBox();
+        HBox hboxRow1 = new HBox();
+        HBox hboxRow2 = new HBox();
+        HBox hboxRow3 = new HBox();
+        HBox hboxRow4 = new HBox();
+        
+        hboxRow.setSpacing(40);
+        hboxRow.getChildren().addAll(hboxRow1, hboxRow2);
         
         ImageView iv =new ImageView(new Image(getClass().getResourceAsStream("img/hotel1.jpg")));
         iv.setImage(null);
 		
 		for (Destination dest : destArr ) {
 			if (dest.getTitle().equals(newV)) {						
-				price.setText("Price (MYR):");
+				price.setText("Price (MYR): ");
 				ratings.setText("Ratings: ");
 				titleD.setText(dest.getTitle());
-				//ADDRESS//text.wrappingWidthProperty().set(345);
+				address.setText("Address: ");
 				priceD.setText(Double.toString(dest.getPrice()));
 				ratingsD.setText(Double.toString(dest.getRatings()));
-				
+				addressD.setText(dest.getAddress());
+				addressD.wrappingWidthProperty().set(400);
+			   
+		        hboxRow3.getChildren().addAll(address, addressD);
+		        hboxRow4.getChildren().addAll(addButton);
+		        hboxRow4.setAlignment(Pos.CENTER_RIGHT);
+			   	   				
 				Image destImg = new Image(getClass().getResourceAsStream(dest.getImage()));				
 			    iv.setImage(destImg);
 				iv.setFitHeight(300);
@@ -309,9 +329,13 @@ public class Layout {
 				});
 			}
 		}
+
+        hboxRow0.getChildren().addAll(address, addressD);
+		hboxRow1.getChildren().addAll(price, priceD);
+		hboxRow2.getChildren().addAll(ratings, ratingsD);
 		
-		detailBox.setSpacing(10);
-		detailBox.getChildren().addAll( titleD, iv, price, priceD, ratings, ratingsD, addButton);		
+		detailBox.setSpacing(15);
+		detailBox.getChildren().addAll( titleD, iv, hboxRow0, hboxRow, hboxRow3, hboxRow4);		
 		return detailBox;
 	}
 

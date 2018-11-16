@@ -117,7 +117,7 @@ public class Sorting {
 	   vboxRight.setAlignment(Pos.CENTER);	   
 		
 	   fullSortDetails.getChildren().addAll(vboxLeft, vboxRight);
-	   fullSortDetails.setSpacing(20);
+	   fullSortDetails.setSpacing(100);
 	   bpSort.setCenter(fullSortDetails);
 	   return bpSort; 
    }
@@ -136,7 +136,7 @@ public class Sorting {
 	    	vbright.getChildren().clear();
 	    	vbleft.getChildren().add(viewOrder(filteredRatings(dataList), curUser));			    	
 	    });
-	    
+	  
 	    costLow.setOnAction(e->{	
 	    	vbleft.getChildren().clear();
 	    	vbright.getChildren().clear();
@@ -145,8 +145,7 @@ public class Sorting {
 	    
 	    costHigh.setOnAction(e->{	
 	    	vbleft.getChildren().clear();
-	    	vbright.getChildren().clear();
-	    	vbright.getChildren().clear();
+	    	vbright.getChildren().clear();	    	
 	    	vbleft.getChildren().add(viewOrder(highPrice(dataList), curUser));		    	
 	    });
        

@@ -7,12 +7,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class Charts {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public BorderPane displayStatistics() {
 		BorderPane bp = new BorderPane();
-		BorderPane.setMargin(bp,new Insets(50,10,10,10));
+		BorderPane.setMargin(bp,new Insets(80,30,10,30));
 	    String austria = "Austria";
 	    String brazil = "Brazil";
 	    String france = "France";
@@ -52,6 +55,9 @@ public class Charts {
         series3.getData().add(new XYChart.Data(usa, 92633.68));  	        
         
         bc.getData().addAll(series1, series2, series3);
+        Text txtTitle = new Text("Statistics");		
+		txtTitle.setFont(Font.font("Arial", FontWeight.BOLD, 50));        
+        bp.setTop(txtTitle);
         bp.setCenter(bc);
 	    return bp;
 	}

@@ -46,7 +46,7 @@ public class Forms {
 	public BorderPane contactUsForm()  {
 		
 		BorderPane contactForm = new BorderPane();
-		BorderPane.setMargin(contactForm,new Insets(80,100,10,100));
+		BorderPane.setMargin(contactForm,new Insets(110,100,10,100));
 		Text txtTitle = new Text("Contact Us");		
 		txtTitle.setFont(Font.font("Arial", FontWeight.BOLD, 50));
 		
@@ -344,8 +344,8 @@ public class Forms {
 				
 				 addTokenFoundInList(listOfItems,response, ad.attr, bw);
 				
-					bw.flush();
-					bw.close();
+//					bw.flush();
+//					bw.close();
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -438,8 +438,8 @@ public class Forms {
 				//add words have same values as keys in hotel
 				addTokenFoundInList(listOfItems, response, hd.hotel, bw);
 					
-					bw.flush();
-					bw.close();
+//					bw.flush();
+//					bw.close();
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -476,7 +476,7 @@ public class Forms {
 			
 		    }
 		});
-
+		
 		VBox vb2 = new VBox();
 		vb2.setAlignment(Pos.CENTER);
 		VBox.setMargin(vb2,new Insets(100,20,20,30));
@@ -535,8 +535,8 @@ public class Forms {
 				
 				addTokenFoundInList(listOfItems, response, rd.rest, bw);
 
-					bw.flush();
-					bw.close();
+//					bw.flush();
+//					bw.close();
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -596,12 +596,15 @@ public class Forms {
 				if(entry.getValue().contains(t))
 				{
 					//store values found in key to arraylist
-					list.add(t);					
+					list.add(t);
+					
 				} 
-				else {					
-					temporary.add(t);			
+				else {
+					
+					temporary.add(t);
+			
+					}
 				}
-			}
 			try {
             //remove duplicates
 			rd.removeDuplicate(temporary);

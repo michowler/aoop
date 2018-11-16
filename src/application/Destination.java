@@ -60,7 +60,7 @@ public class Destination {
 		this.address = address;
 		this.image = image;
 	}
-
+	
 	/**
 	 * @param title destination title
 	 */

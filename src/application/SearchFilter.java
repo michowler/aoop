@@ -61,7 +61,7 @@ public class SearchFilter {
                 Layout layout = new Layout();
                 mainData dataList = new mainData();  
                 vboxDetails.getChildren().clear();
-                vboxDetails.setSpacing(20);
+                vboxDetails.setSpacing(18);
                 vboxDetails.getChildren().addAll(layout.details(curUser, dataList.dataList(), newValue));
                 
             }
@@ -71,8 +71,8 @@ public class SearchFilter {
         vboxList.getChildren().addAll(txt, list);        
         HBox hbox = new HBox();
         hbox.getChildren().addAll(vboxList, vboxDetails);        
-        hbox.setSpacing(20);
-        Text txtTitle = new Text("Search Destination");		
+        hbox.setSpacing(100);
+        Text txtTitle = new Text("Search");		
 		txtTitle.setFont(Font.font("Arial", FontWeight.BOLD, 50));
         bp.setTop(txtTitle);
         bp.setCenter(hbox);
