@@ -19,8 +19,8 @@ public class Restaurants extends Destination {
 	 * @param address address
 	 * @param restaurantType restaurant type
 	 */
-	public Restaurants(String title , double cost , double latitude , double longtitude , double ratings, String address, String restaurantType) {
-		super(title,cost,latitude,longtitude,ratings, address);
+	public Restaurants(String title , double cost , double latitude , double longtitude , double ratings, String address, String image, String restaurantType) {
+		super(title,cost,latitude,longtitude,ratings, address, image);
 		this.restaurantType = restaurantType;
 	}
 	

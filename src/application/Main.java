@@ -24,7 +24,7 @@ public class Main extends Application {
 			BorderPane root = new BorderPane();
 			Forms form = new Forms();
 			root.setCenter(form.loginForm(form.initUserDB(), primaryStage));			
-			Scene sceneLogout = new Scene(root, 1280,720);			
+			Scene sceneLogout = new Scene(root, 1280,720);		
 			primaryStage.setScene(sceneLogout);	
 			primaryStage.setTitle("Tour Me Around");			
 			sceneLogout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());			

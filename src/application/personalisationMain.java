@@ -41,38 +41,28 @@ public class personalisationMain {
 		attr.setToggleGroup(group);
 		hotel.setToggleGroup(group);
 		
-		Button ok = new Button("OK");
-		
-		ok.setOnAction(value -> {			
-			if(group.getSelectedToggle() == rest) {
-				//mainRestaurant.launch(mainRestaurant.class);
-				try {					
-					bp.setBottom(form.restaurantFilter());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		Button ok = new Button("Choose");
+		ok.setOnAction(value -> {
+			try {
+				if(group.getSelectedToggle() == rest) {
+					//mainRestaurant.launch(mainRestaurant.class);					
+					bp.setBottom(form.restaurantFilter());				
 				}
-			}
-			else if (group.getSelectedToggle() == attr) {
-				try {
+				else if (group.getSelectedToggle() == attr) {					
 					bp.setBottom(form.attractionFilter());
 					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				try {
+				} else {					
 					bp.setBottom(form.hotelFilter());
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				};
-			}
-			
+				}		
+			} catch (NullPointerException e) {				
+				e.printStackTrace();
+			} catch (RuntimeException e) {				
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}							
 		});
-			
+
 		VBox vb = new VBox();
 		vb.setSpacing(10);
 		vb.getChildren().addAll(new Label("Choose one category: "), rest, attr, hotel, ok);

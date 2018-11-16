@@ -51,8 +51,7 @@ public class User {
 		this.latitude = latitude;
 		this.longtitude = longtitude;
 		this.myIt = new ArrayList<Destination>();
-		this.myHistory = new ArrayList<Destination>();
-		this.myContainer = new ArrayList<Pane>();
+		this.myHistory = new ArrayList<Destination>();		
 	}
 	
 	/**

@@ -29,7 +29,7 @@ public class Destination {
 	private double ratings;
 	private String state;
 	private String address;
-	//private String image;
+	private String image;
 	//private HashMap <> tags; 
 	
 	public Destination() {
@@ -38,8 +38,7 @@ public class Destination {
 	public Destination(double latitude, double longtitude) {	
 		this.latitude = latitude;
 		this.longtitude = longtitude;
-		this.title = "Your location";		
-		
+		this.title = "Your location";				
 	}
 	
 	/**
@@ -51,7 +50,7 @@ public class Destination {
 	 * @param ratings ratings
 	 * @param address address
 	 */
-	public Destination(String title, double price, double latitude, double longtitude, double ratings, String address) {
+	public Destination(String title, double price, double latitude, double longtitude, double ratings, String address, String image) {
 		this.title = title;
 		this.price = price;
 		this.latitude = latitude;
@@ -59,7 +58,7 @@ public class Destination {
 		this.ratings = ratings;
 		this.state = "Kuala Lumpur";		
 		this.address = address;
-		//this.image = image;
+		this.image = image;
 	}
 
 	/**
@@ -88,6 +87,13 @@ public class Destination {
 	 */
 	public double getPrice(){
 		return this.price;
+	}
+	
+	/**
+	 * @return image path of destination
+	 */
+	public String getImage(){
+		return this.image;
 	}
 	
 	/**

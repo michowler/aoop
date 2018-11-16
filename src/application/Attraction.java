@@ -20,8 +20,8 @@ public class Attraction extends Destination {
 	 * @param address address
 	 * @param attType attraction type
 	 */
-	public Attraction(String title, double price, double latitude, double longtitude, double ratings, double distance, String address, String attType) {
-		super(title, price, latitude, longtitude, ratings, address);	
+	public Attraction(String title, double price, double latitude, double longtitude, double ratings, double distance, String address, String image, String attType) {
+		super(title, price, latitude, longtitude, ratings, address, image);	
 		this.attType = attType;		
 	}
 	

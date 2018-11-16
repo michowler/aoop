@@ -7,8 +7,11 @@ import java.util.StringTokenizer;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -16,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
@@ -44,17 +48,12 @@ public class Layout {
 		   
 	    MenuItem settingsMenu = new MenuItem("Settings"); 
 	    MenuItem itineraryMenu = new MenuItem("Itinerary Plan");
-	    MenuItem contactMenu = new MenuItem("Contact");
+	    MenuItem contactMenu = new MenuItem("Contact Us");
 	    MenuItem logoutMenu = new MenuItem("Logout"); 	     		
 	    MenuItem statsMenu = new MenuItem("Statistics");
 	    MenuItem personMenu = new MenuItem("Personalize");
 	    
-	    moreOptions.getItems().add(statsMenu);
-	    moreOptions.getItems().add(personMenu);
-	    moreOptions.getItems().add(itineraryMenu); 
-	    moreOptions.getItems().add(contactMenu);
-	    moreOptions.getItems().add(settingsMenu);
-	    moreOptions.getItems().add(logoutMenu); 
+	    moreOptions.getItems().addAll(statsMenu, personMenu, itineraryMenu, contactMenu, settingsMenu, logoutMenu);
         
         MenuBar menuBar = new MenuBar();        
         menuBar.getMenus().add(moreOptions); 
@@ -63,26 +62,11 @@ public class Layout {
 		Button homeButton = new Button("Home");
 		
 		Image imageButton = new Image(getClass().getResourceAsStream("home.png"));
-		ImageView ivSearch =new ImageView(imageButton);
+		ImageView ivSearch = new ImageView(imageButton);
 		ivSearch.setFitHeight(18);
 		ivSearch.setFitWidth(18);
 		homeButton.setGraphic(ivSearch);
-		
-//		TextField searchField = new TextField();		
-//		Button searchButton = new Button("Search");				
-//		searchField.setPromptText("enter destination");
-		
-//		ArrayList<String> searchingText = new ArrayList<String>();
-//		searchButton.setOnAction(e->{			
-//			searchButton.setText("Searching..");
-//			StringTokenizer st = new StringTokenizer(searchField.getText());
-//		     
-//		     while (st.hasMoreElements()) {
-//		    	 searchingText.add((String) st.nextElement());
-//		    	 System.out.println("Next element : " + st.nextElement());
-//		     }
-//		});
-//												
+									
 		HBox.setMargin(homeButton,new Insets(10,10,10,10));
 		HBox.setMargin(menuBar,new Insets(10,10,10,10));							    	    
 	    
@@ -92,7 +76,12 @@ public class Layout {
 	    bPaneTop.setLeft(menuHBoxLeft);
 	    bPaneTop.setRight(menuHBoxRight);
 	    homepage.setTop(bPaneTop);
-	    homepage.setCenter(mainContainer());	  
+	    try {
+			homepage.setCenter(mainContainer(curUser.get(0)));
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}	  
 	    
 	    personMenu.setOnAction(e->{	    	
 	    	personalisationMain personal = new personalisationMain();
@@ -107,7 +96,12 @@ public class Layout {
 	   
 	    homeButton.setOnAction(e->{
 	    	//clear container, enter new container	    	
-	    	homepage.setCenter(mainContainer());
+	    	try {
+				homepage.setCenter(mainContainer(curUser.get(0)));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	    });
 	    
 	    
@@ -116,8 +110,7 @@ public class Layout {
 	    	homepage.setCenter(cb.displayStatistics());
 	    });	    	    
 	    
-	    itineraryMenu.setOnAction(e->{	    	
-	    	//plan.start(primaryStage);
+	    itineraryMenu.setOnAction(e->{	    		    		    	    	
 	    	ItineraryPlan plan = new ItineraryPlan(curUser.get(0).getMyIt(), curUser.get(0));
 	    	homepage.setCenter(plan.displayMyIt());	    		    	
 	    });
@@ -138,7 +131,7 @@ public class Layout {
 			primaryStage.show();
 	    });
 	    
-	    contactMenu.setOnAction(e->{		    	
+	    contactMenu.setOnAction(e->{
 	    	homepage.setCenter(form.contactUsForm());
 	    });
 	    
@@ -146,20 +139,7 @@ public class Layout {
 		
 	}
 	
-	public BorderPane mainContainer() {
-        ScrollPane scrollPane = new ScrollPane();
-        
-        Button button = new Button("My Button");
-        button.setPrefSize(400, 300);
- 
-        // Set content for ScrollPane
-        scrollPane.setContent(button);
- 
-        // Always show vertical scroll bar
-        scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-        
-        // Horizontal scroll bar is only displayed when needed
-        scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+	public BorderPane mainContainer(User curUser) throws IOException {
 		
 		BorderPane homeContainer = new BorderPane();		
 		BorderPane.setMargin(homeContainer,new Insets(80,100,10,100));
@@ -170,7 +150,7 @@ public class Layout {
 	    iv.setFitHeight(150);
 		iv.setFitWidth(180);
 		
-	    Button searchButton = new Button("Search Destinations");
+	    Button searchButton = new Button("Search Destination");
 	    Image searchImg = new Image(getClass().getResourceAsStream("search.png"));
 		ImageView ivSearch =new ImageView(searchImg);
 		ivSearch.setFitHeight(20);
@@ -179,7 +159,7 @@ public class Layout {
 		
 	    searchButton.setOnAction(e->{
 	    	SearchFilter searchDest = new SearchFilter();
-	    	homeContainer.setCenter(searchDest.searchBox());	    	
+	    	homeContainer.setCenter(searchDest.searchBox(curUser));	    	
 	    });
 				
 		VBox vboxHotel = new VBox();
@@ -215,31 +195,28 @@ public class Layout {
         iv3.setImage(restPic);     
         
         Image restimgButton = new Image(getClass().getResourceAsStream("logorestaurant.png"));
-		ImageView ivRest =new ImageView(restimgButton);
+		ImageView ivRest = new ImageView(restimgButton);
 		ivRest.setFitHeight(25);
 		ivRest.setFitWidth(25);
 		restButton.setGraphic(ivRest);
 		
         iv1.setPreserveRatio(true);
         iv2.setPreserveRatio(true);
-        iv3.setPreserveRatio(true);        
-		
-		hotelButton.setOnAction(e->{
-			//2 vbox = 1 hbox
-//			mainData dataList = new mainData();
-//			Sorting st = new Sorting();			
-			//price, ratings, alphabet
-//			homeContainer.setCenter(fullList(st.filteredPrice(dataList.hotelList())));
-//			homeContainer.setCenter(fullList(st.filteredRatings(dataList.hotelList())));
-			
+        iv3.setPreserveRatio(true);   
+        
+        Sorting st = new Sorting();        
+        mainData dataList = new mainData();                     
+        		        
+		hotelButton.setOnAction(e->{				
+			homeContainer.setCenter(st.viewOrder(dataList.hotelList(), curUser));			
 		});
 		
-		restButton.setOnAction(e->{
-			
+		restButton.setOnAction(e->{			
+			homeContainer.setCenter(st.viewOrder(dataList.restList(), curUser));
 		});
 		
 		placeButton.setOnAction(e->{
-			
+			homeContainer.setCenter(st.viewOrder(dataList.attrList(), curUser));
 		});
 		
 		vboxHotel.setAlignment(Pos.BASELINE_CENTER);
@@ -260,70 +237,82 @@ public class Layout {
 		menuBox.getChildren().addAll(iv,searchButton, hboxMenu);
 		
 		homeContainer.setAlignment(iv,Pos.BASELINE_LEFT);		
-		homeContainer.setCenter(menuBox);		
-		scrollPane.setContent(homeContainer);
+		homeContainer.setCenter(menuBox);				
 		hboxMenu.setAlignment(Pos.BASELINE_CENTER);
 		return homeContainer;	
 		
 	}
+//	
+//	public HBox detailsDest(Destination dest) {
+//		//destArr
+//		HBox hbox = new HBox();
+//		VBox imageBox = new VBox();
+//		VBox detailsBox = new VBox();
+//		//image
+//		Image pic = new Image(getClass().getResourceAsStream("logohotel.png"));
+//		ImageView ivDest =new ImageView(pic);
+//		ivDest.setFitHeight(25);
+//		ivDest.setFitWidth(22);        		
+//		
+//		Label titleLabel = new Label("");
+//		Label ratingLabel = new Label("");
+//		
+//		titleLabel.setText(dest.getTitle());
+//		ratingLabel.setText(Double.toString(dest.getRatings()));
+//		
+//		Button btnMore = new Button("more details");
+//		detailsBox.getChildren().addAll(titleLabel, ratingLabel, btnMore);
+//		detailsBox.setSpacing(20);
+//		imageBox.getChildren().addAll(ivDest);
+//		hbox.getChildren().addAll(imageBox, detailsBox);
+//		return hbox;
+//	}//Parent root = FXMLLoader.load(getClass().getResource("MenuHots.fxml"));		
 	
-	public VBox fullList(ArrayList<Destination> dests) { //change to scrollpane
-		VBox vboxList = new VBox();
-		for(Destination d: dests) {			
-			vboxList.getChildren().add(detailsDest(d));
-		}
-		return vboxList;
-	}		
-	
-	public HBox detailsDest(Destination dest) {
-		//destArr
-		HBox hbox = new HBox();
-		VBox imageBox = new VBox();
-		VBox detailsBox = new VBox();
-		//image
-		Image pic = new Image(getClass().getResourceAsStream("logohotel.png"));
-		ImageView ivDest =new ImageView(pic);
-		ivDest.setFitHeight(25);
-		ivDest.setFitWidth(22);        		
-		
-		Label titleLabel = new Label("");
-		Label ratingLabel = new Label("");
-		
-		titleLabel.setText(dest.getTitle());
-		ratingLabel.setText(Double.toString(dest.getRatings()));
-		
-		Button btnMore = new Button("more details");
-		detailsBox.getChildren().addAll(titleLabel, ratingLabel, btnMore);
-		detailsBox.setSpacing(20);
-		imageBox.getChildren().addAll(ivDest);
-		hbox.getChildren().addAll(imageBox, detailsBox);
-		return hbox;
-	}		
-	
-	public VBox details(ArrayList<Destination> destArr, String newV) {
-		VBox detailBox = new VBox();
-		Label title = new Label("Title: ");		
+	public VBox details(User curUser, ArrayList<Destination> destArr, String newV) {             
+		VBox detailBox = new VBox();			
 		Label titleD = new Label("");
-		Label price = new Label("Price: ");
+		titleD.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+		Label price = new Label("");
 		Label priceD = new Label("");
-		Label address = new Label("Address: ");
-		Label addressD = new Label("");
+		Label ratings = new Label("");
+		Text ratingsD = new Text("");
+		Button addButton = new Button("Itinerary");
+		
+        Image addImg = new Image(getClass().getResourceAsStream("add.png"));
+		ImageView ivAdd =new ImageView(addImg);
+		ivAdd.setFitHeight(20);
+		ivAdd.setFitWidth(20);
+        addButton.setGraphic(ivAdd);         
+        
+        ImageView iv =new ImageView(new Image(getClass().getResourceAsStream("img/hotel1.jpg")));
+        iv.setImage(null);
 		
 		for (Destination dest : destArr ) {
-			if (dest.getTitle().equals(newV)) {
-				//if searched, then add things in vbox
+			if (dest.getTitle().equals(newV)) {						
+				price.setText("Price (MYR):");
+				ratings.setText("Ratings: ");
 				titleD.setText(dest.getTitle());
+				//ADDRESS//text.wrappingWidthProperty().set(345);
 				priceD.setText(Double.toString(dest.getPrice()));
-				addressD.setText(dest.getAddress());
+				ratingsD.setText(Double.toString(dest.getRatings()));
+				
+				Image destImg = new Image(getClass().getResourceAsStream(dest.getImage()));				
+			    iv.setImage(destImg);
+				iv.setFitHeight(300);
+				iv.setFitWidth(450);  
+				
+				addButton.setOnAction(e->{
+					curUser.addMyIt(dest);
+					ShowMessage infoDest = new ShowMessage();
+					infoDest.showMessage(dest);
+					System.out.println(dest.toString());
+				});
 			}
 		}
 		
-		detailBox.getChildren().addAll(title, titleD, price, priceD, address, addressD);
-				
+		detailBox.setSpacing(10);
+		detailBox.getChildren().addAll( titleD, iv, price, priceD, ratings, ratingsD, addButton);		
 		return detailBox;
 	}
-
-	
-	
 
 }

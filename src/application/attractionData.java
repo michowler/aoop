@@ -18,5 +18,6 @@ HashMap<String, List<String>>  attr = new HashMap<String, List<String>>();
 		attr.put("Petaling Street Market", Arrays.asList(new String[] {"family", "free", "night life", "shopping", "shop"}));
 		attr.put("Lake Gardens", Arrays.asList(new String[] {"family", "free", "nature", "wildlife"}));
 		attr.put("Sri Mahamariamman Temple", Arrays.asList(new String[] {"free", "sacred", "hindu", "religious"}));
+
 	}
 }

@@ -24,26 +24,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ItineraryPlan{
-	
 	ArrayList<Destination> destination = new ArrayList<Destination>();
 	User user;
 	int initialSize;
 	
 	Button addPlans;
 	Button[] deletePlans;
-	
+	double btDis = 0.0;
 	Label overBudget;
-	Label budget;
+	Label budget; 
 	Label totalCost;
 	Label[] numberDestination;
 	Label[] costField; 
@@ -52,7 +47,7 @@ public class ItineraryPlan{
 	Label[] distanceField; 
 	Label[] transTypeField; 
 	Label[] transCostField; 
-	
+	DecimalFormat df = new DecimalFormat("#.##");   
 	HBox[] detailsBox;
 	public ItineraryPlan() {
 		
@@ -67,10 +62,7 @@ public class ItineraryPlan{
 		}
 	}
 	
-	public BorderPane displayMyIt() {
-		//add title
-		BorderPane bp = new BorderPane();
-		BorderPane.setMargin(bp,new Insets(80,100,10,100));
+	public VBox displayMyIt() {
 		
 		overBudget = new Label();
 		budget = new Label("Your budget: " + user.getBudget());
@@ -86,7 +78,7 @@ public class ItineraryPlan{
 		transCostField = new Label[destination.size()];
 		deletePlans = new Button[destination.size()];	
 		
-		DecimalFormat df = new DecimalFormat("#.##");   
+		
 		HBox buttonBox = new HBox();
 		Button home = new Button("Home");
 		Button search = new Button("Search");
@@ -104,22 +96,50 @@ public class ItineraryPlan{
 		VBox vbox = new VBox();
 		
 		int number = 1;
-		double btDis = 0.0;
+	
 		double totalPrice = 0.0;
 		double totalTransCost = 0.0;
 		HBox labelsBox = new HBox();
-		labelsBox.getChildren().addAll(new Label("Number"), new Label("From\t\t-"), new Label("To"),new Label("Cost(MYR)"), new Label("Distance(KM)"), 
-				new Label("Trans Type"), new Label("Trans Cost(MYR)"));
+		Label numberLabel = new Label("No");
+		Label fromLabel = new Label("From\t\t-");
+		Label toLabel = new Label("To");
+		Label costLabel = new Label("Cost (MYR)");
+		Label distanceLabel = new Label("Distance(KM)");
+		Label transTypeLabel = new Label("Trans Type");
+		Label transCostLabel = new Label("Trans Cost(MYR)");
+		
+		numberLabel.setStyle("-fx-font-weight: bold;");
+		fromLabel.setStyle("-fx-font-weight: bold;");
+		numberLabel.setStyle("-fx-font-weight: bold;");
+		toLabel.setStyle("-fx-font-weight: bold;");
+		costLabel.setStyle("-fx-font-weight: bold;");
+		distanceLabel.setStyle("-fx-font-weight: bold;");
+		transTypeLabel.setStyle("-fx-font-weight: bold;");
+		transCostLabel.setStyle("-fx-font-weight: bold;");
+		
+		numberLabel.setMinWidth(40);
+		fromLabel.setMinWidth(200);
+		fromLabel.setAlignment(Pos.TOP_LEFT);
+		toLabel.setMinWidth(200);
+		toLabel.setAlignment(Pos.TOP_LEFT);
+		costLabel.setMinWidth(70);
+		distanceLabel.setMinWidth(100);
+		transTypeLabel.setMinWidth(70);
+		transCostLabel.setMinWidth(120);
+		
+		labelsBox.getChildren().addAll(numberLabel, fromLabel, toLabel, costLabel, distanceLabel, transTypeLabel, transCostLabel);
 				FlowPane flowPane = new FlowPane();
 		flowPane.setMinSize(650, 300);
 		labelsBox.setSpacing(20);
 		vbox.getChildren().add(labelsBox);
         budget.setText("Your budget: RM" + user.getBudget() + (user.getCountry().equalsIgnoreCase("Malaysia")? "": "/" + convertCash(user, user.getBudget())));
       
+       /**
+        * Check if destination.size() is empty
+        */
 		if(!(destination.isEmpty())) {
-			if(destination.size()>1) {
 				for(int x = 0; x < destination.size(); x++) {
-					addDetails(number, x, btDis, df); //here
+					addDetails(number, x); //here
 					
 					vbox.getChildren().add(detailsBox[x]);
 					int z = x;
@@ -138,14 +158,15 @@ public class ItineraryPlan{
 								double totalPrice = 0.0;
 								double btDis = 0.0;
 
-								if(destination.size()>1) {
+								if(destination.size()>0) {
 									//to get the actual index of destination. 
 									//when a row is cleared, the index of the button doesn't change accordingly. 
 									for(int r = 0; r < destination.size(); r++) {
 										if(toField[z].getText().equals(destination.get(r).getTitle())) {
 											//destination is removed is the text in toField is the same as destination.get(r).getTitle()
-											//destination.size() is then decreased			
+											//destination.size() is then decreased		
 											deleteRow(r, z);
+											
 										}
 									}
 									//a < initialSize because the size of the label and box is the intial size of the destination ArrayList,
@@ -153,7 +174,7 @@ public class ItineraryPlan{
 									//destination is removed, so size decreases. 
 									//if destination.size() is used, it can't go through the entire label and box array.
 							
-								for(int a = 0; a < initialSize; a++) {
+									for(int a = 0; a < initialSize; a++) {
 										//to re-organize the itinerary plan in ascending order.
 										//and to update the itinerary plan
 										if(!(detailsBox[a].getChildren().isEmpty())) {
@@ -170,69 +191,55 @@ public class ItineraryPlan{
 											toField[a].setText(destination.get(no).getTitle());
 											costField[a].setText(Double.toString(destination.get(no).getPrice()));
 											distanceField[a].setText(df.format(btDis));
-											transTypeField[a].setText(transFee(btDis)[0]);
-											transCostField[a].setText(transFee(btDis)[1]);
-											System.out.println("price: " + destination.get(no).getPrice());
+											transTypeField[a].setText(transType(btDis));
+											transCostField[a].setText(df.format(transFee(btDis)));
 											totalPrice += destination.get(no).getPrice();
-											System.out.println(totalPrice);
-											totalTransCost += Double.parseDouble(transFee(btDis)[1]);
-											getBudget(df, btDis, totalPrice, totalTransCost);
+											totalTransCost += transFee(btDis);
+											getBudget(btDis, totalPrice, totalTransCost);
 											numbers++;
 											no++;
 										}		
 									}
 								}
-								else {
-									deleteRow(0, 0);	
-									totalPrice = 0.0;
-									totalTransCost = 0.0;
-									getBudget(df, btDis, totalPrice, totalTransCost);
-								}
-							}
+//								else {
+//								deleteRow(0, 0);	
+//								totalPrice = 0.0;
+//								totalTransCost = 0.0;
+//								getBudget(btDis, totalPrice, totalTransCost);
+//								}
+							}	
 						}
 					});
 					totalPrice += destination.get(x).getPrice();
-					totalTransCost += Double.parseDouble(transFee(btDis)[1]);
+					totalTransCost += transFee(btDis);
 					number++;
 				}
-				getBudget(df, btDis, totalPrice, totalTransCost);
-			}	
-			else {
-				addDetails(0, 0, btDis, df);
-				deletePlans[0].setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						deleteRow(0, 0);	
-						getBudget(df, btDis, 0.0, 0.0);
-					}
-				});
-
-				vbox.getChildren().add(detailsBox[0]);
-				totalPrice += destination.get(0).getPrice();
-				totalTransCost += Double.parseDouble(transFee(btDis)[1]);
-				getBudget(df, btDis, totalPrice, totalTransCost);
-				number++;				
-			}
-			vbox.getChildren().addAll(overBudget, budget, totalCost);
-			overBudget.setAlignment(Pos.CENTER);
-			budget.setAlignment(Pos.CENTER);
-			totalCost.setAlignment(Pos.CENTER);
+				
+		}else {
+			Label empty = new Label("You have not added anything to your itinerary plan!");
+			vbox.getChildren().add(empty);
+			empty.setAlignment(Pos.CENTER);
 		}
+		getBudget(btDis, totalPrice, totalTransCost);	
+		vbox.getChildren().addAll(overBudget, budget, totalCost);
+		overBudget.setAlignment(Pos.CENTER);
+		budget.setAlignment(Pos.CENTER);
+		totalCost.setAlignment(Pos.CENTER);
 		ScrollPane scrollBar = new ScrollPane(vbox);
 		vbox.setAlignment(Pos.CENTER);
 		flowPane.getChildren().addAll(buttonBox, vbox);
 		flowPane.setMargin(buttonBox, new Insets(10, 10, 10, 10));	
-		
-		Text sceneTitle = new Text("My Itinerary Plan");		
-		sceneTitle.setFont(Font.font("Arial", FontWeight.BOLD, 50));
-		bp.setTop(sceneTitle);
-		bp.setCenter(vbox);
-		return bp;
+	
+		return vbox;
 	}
 
 	
-/* add details of itinerary plan
- */
-	public void addDetails(int number, int x, double btDis, DecimalFormat df) {
+	/**
+ 	* This method is to add the text and data to the itinerary plan
+ 	* @param number
+ 	* @param x
+ 	*/
+	public void addDetails(int number, int x) {
 		
 		if(number==1) {
 			btDis = distance(user.getLatitude(), user.getLongtitude(), destination.get(x).getLatitude(), destination.get(x).getLongtitude());
@@ -242,55 +249,50 @@ public class ItineraryPlan{
 			btDis = distance(destination.get(x-1).getLatitude(), destination.get(x-1).getLongtitude(), destination.get(x).getLatitude(), destination.get(x).getLongtitude());
 			fromField[x] = new Label(destination.get(x-1).getTitle());
 		}
-		
 		numberDestination[x] = new Label();
 		numberDestination[x].setText(Integer.toString(number));
 		toField[x] = new Label(destination.get(x).getTitle());
 		costField[x] = new Label(Double.toString(destination.get(x).getPrice()));
 		distanceField[x] = new Label(df.format(btDis));
-		transTypeField[x] = new Label(transFee(btDis)[0]);
-		transCostField[x] = new Label(transFee(btDis)[1]);
+		transTypeField[x] = new Label(transType(btDis));
+		transCostField[x] = new Label((df.format(transFee(btDis))));
 		deletePlans[x] = new Button("X");
-		
+		numberDestination[x].setMinWidth(40);
+		fromField[x].setMinWidth(200);
+		toField[x].setMinWidth(200);
+		costField[x].setMinWidth(70);
+		distanceField[x].setMinWidth(100);
+		transTypeField[x].setMinWidth(70);
+		transCostField[x].setMinWidth(120);
+		deletePlans[x].setMinWidth(20);
 		detailsBox[x] = new HBox();
 		detailsBox[x].getChildren().addAll(numberDestination[x], fromField[x], toField[x], costField[x], distanceField[x], transTypeField[x], transCostField[x]
 				, deletePlans[x]);
-		detailsBox[x].setMargin(numberDestination[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(fromField[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(toField[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(costField[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(distanceField[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(transTypeField[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(transCostField[x], new Insets(10, 10, 10, 10));
-		detailsBox[x].setMargin(deletePlans[x], new Insets(10, 10, 10, 10));
+		detailsBox[x].setSpacing(20);
+	
 	}
 	/* delete itinerary plan*/ 
-	
+
 	public void deleteRow(int r, int z) {
 		detailsBox[z].getChildren().clear();
-		if(r == 0 ) {
-			destination = new ArrayList();
-		}
-		else {
-			destination.remove(r);
-		}		
+		destination.remove(r);	
 	}
-	
+
 	/* get budget of itinerary plan */
-	public void getBudget(DecimalFormat df, double btDis, double totalPrice, double totalTransCost) {
+	public void getBudget(double btDis, double totalPrice, double totalTransCost) {
 		totalCost.setText("Total Cost: RM" + df.format(totalPrice+totalTransCost) + (user.getCountry().equalsIgnoreCase("Malaysia")?"":" / " + 
-		convertCash(user, totalPrice)));
-		  if(user.getBudget()>= (totalPrice+totalTransCost)) {
-			  overBudget.setText("You are still within budget!");
-		  }
-		  else if (user.getBudget()< (totalPrice+totalTransCost)) {
-			  overBudget.setText("You have exceeded your budget!");
-		  }
-		  else if (user.getBudget() == 0) {
-			  overBudget.setText("Well..You don't have a budget. Have a nice trip!");
-		  }
+				convertCash(user, totalPrice)));
+		if(user.getBudget()>= (totalPrice+totalTransCost)) {
+		  overBudget.setText("You are still within budget!");
+		}
+		else if (user.getBudget()< (totalPrice+totalTransCost)) {
+		  overBudget.setText("You have exceeded your budget!");
+		}
+		else if (user.getBudget() == 0) {
+		  overBudget.setText("Well..You don't have a budget. Have a nice trip!");
+		}
 	}
-	
+
 	public static double distance(double lat1, double lon1, double lat2, double lon2) {
 		double theta = lon1 - lon2;
 		double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -300,7 +302,7 @@ public class ItineraryPlan{
 		dist = dist * 1.1609344;
 		return (dist);
 	}
-	
+
 	/**
 	 * This method changes the degree to radians
 	 * @param deg the degree
@@ -309,16 +311,15 @@ public class ItineraryPlan{
 	public static double deg2rad(double deg) {
 		return (deg * Math.PI / 180.0);
 	}
-	
+
 	/**
 	 * This method changes the radians to degree
 	 * @param rad the radian
 	 * @return rad
 	 */
 	public static double rad2deg(double rad) {
-		 return (rad * 180.0 / Math.PI);
-	}
-
+	 return (rad * 180.0 / Math.PI);
+}
 	/**
 	 * This method is used to calculate any amount to the expected currency value base on user details
 	 * @param user user object
@@ -343,12 +344,43 @@ public class ItineraryPlan{
 		}		
 		return df.format(curCash) + " " + cur ;
 	}
+
+/**
+ * This method is used to return the transport type based on the distance given between two destinations.
+ * @param distance
+ * @return
+ */
+	public static String transType(double distance) {
+       double busFee =0, taxiFee=0, trainFee=0, fee=0;
+       String type ="";
+       
+       busFee = distance * 1.2;
+       taxiFee = distance * 2.3;
+       trainFee = distance * 1.3;
+       
+       if(distance <= 1.5) {
+       	type = "Walking";
+          
+       }else if(distance <= 3) {
+       	type = "Bus";
+       	
+       }else if(distance <= 5) {
+       	type = "Train";
+       	
+       }else if(distance > 5) {
+       	type = "Taxi";
+       	
+       }
+       return type;        
+   }
+/**
+ * This method is used to calculate the transportation fee based on the distance
+ * @param distance
+ * @return
+ */
+	public static double transFee(double distance) {
 	
-	
-	public static String[] transFee(double distance) {
-        ArrayList<String> transFee = new ArrayList<String>();
-        String[][] tp = new String[10][10];
-        double busFee =0, taxiFee=0, trainFee=0, fee=0;
+        double busFee =0, taxiFee=0, trainFee=0, fee=0, transFee = 0.0;
         String type ="";
         
         busFee = distance * 1.2;
@@ -356,23 +388,15 @@ public class ItineraryPlan{
         trainFee = distance * 1.3;
         
         if(distance <= 1.5) {
-        	type = "Walking";
-            tp[0][0] = type;
-            tp[0][1] = "0";
+            transFee = 0.0;
         }else if(distance <= 3) {
-        	type = "Bus";
-        	tp[0][0] = type;
-            tp[0][1] = Double.toString(busFee);
+        	transFee = busFee;
         }else if(distance <= 5) {
-        	type = "Train";
-        	tp[0][0] = type;
-            tp[0][1] = Double.toString(trainFee);;
+        	transFee = trainFee;
         }else if(distance > 5) {
-        	type = "Taxi";
-        	tp[0][0] = type;
-            tp[0][1] = Double.toString(taxiFee);;
+        	transFee = taxiFee;
         }
-        System.out.println("tp[0][1]" + tp[0][1]);
-        return tp[0];        
-    }
+        return transFee;        
+	}
 }
+

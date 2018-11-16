@@ -61,7 +61,7 @@ public class Forms {
 		Label contactLabel = new Label("Contact us for questions or feedbacks!");
 		
 		String fileName = "contactUs.txt";
-		Button submit = new Button("SUBMIT");
+		Button submit = new Button("Submit");
 		
 		VBox contactList = new VBox();
 		contactList.setSpacing(20);
@@ -242,9 +242,10 @@ public class Forms {
             	//else append text or notification to try again
             	panehbox4.getChildren().clear();
             	ArrayList<User> curUser = new ArrayList<User>();
+            	
         		for(User user: myUsers){                		
         			if(usrField.getText().equals(user.getUsername()) && pwField.getText().equals(user.getPassword())) {
-        					curUser.add(new User(user.getUsername(), user.getPassword(),user.getLocation(), user.getBudget(), user.getCountry(), user.getLatitude(), user.getLongtitude()));
+        					curUser.add(new User(user.getUsername(), user.getPassword(),user.getLocation(), user.getBudget(), user.getCountry(), user.getLatitude(), user.getLongtitude()));        		
         					BorderPane loginPane = new BorderPane();
         					Layout home = new Layout();
         					loginPane.setTop(home.homeMenu(curUser, primaryStage));
@@ -581,29 +582,43 @@ public class Forms {
 		return vb2;
 	}
 	 
-	public static void addTokenFoundInList(ArrayList<String> list, String response, HashMap<String, List<String>> place, BufferedWriter bw) throws IOException {
+	public static void addTokenFoundInList(ArrayList<String> list, String response, HashMap<String, List<String>> hotel, BufferedWriter bw) throws IOException {
 		//separate each word and ignore . and ,
 		StringTokenizer st = new StringTokenizer(response, "., ");
+		restaurantData rd = new restaurantData();
+		ArrayList<String> temporary = new ArrayList<String>();
 		while(st.hasMoreTokens()) {
 			//move to next word/token
 			String t = st.nextToken();
 			//iterate through map
-			for (Map.Entry<String,List<String> > entry : place.entrySet()) 
+			for (Map.Entry<String,List<String> > entry : hotel.entrySet()) 
 			{	//if map contains the word found in user's input
 				if(entry.getValue().contains(t))
 				{
 					//store values found in key to arraylist
-					list.add(t);
-					
+					list.add(t);					
 				} 
-				else {
-					//if token not found in hashmap, write to unknown file
-					bw.write(t + "\n");
+				else {					
+					temporary.add(t);			
 				}
-			}	
+			}
+			try {
+            //remove duplicates
+			rd.removeDuplicate(temporary);
+			//write to file
+			for (String element : temporary) {
+				bw.write(element.toString());
+			}
+			bw.flush();
+			bw.close();
 		
-		}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
+		}
 	}
 	 
 }

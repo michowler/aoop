@@ -20,8 +20,8 @@ public class Hotels extends Destination{
 	 * @param address address
 	 * @param star hotel star rating
 	 */
-	public Hotels(String title , double price , double latitude , double longtitude , double ratings ,String address, int star) {
-		super(title,price,latitude,longtitude,ratings, address);
+	public Hotels(String title , double price , double latitude , double longtitude , double ratings ,String address, String image, int star) {
+		super(title,price,latitude,longtitude,ratings, address, image);
 		this.star = star;
 	}
 	
